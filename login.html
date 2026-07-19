@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(97% 0.015 75);font-family:'Inter',system-ui,sans-serif}
+  a{color:oklch(55% 0.17 250);text-decoration:none}
+  a:hover{color:oklch(45% 0.17 250)}
+  @keyframes floatY{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(var(--r,0deg))}}
+  @keyframes floatY2{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(12px) rotate(var(--r,0deg))}}
+  .bonk-input{width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;font-size:16px;padding:14px 16px;border-radius:14px;border:2.5px solid oklch(22% 0.02 60);background:oklch(99% 0.008 80);outline:none}
+  .bonk-input:focus{box-shadow:3px 3px 0 oklch(22% 0.02 60)}
+  .bonk-input::placeholder{color:oklch(60% 0.02 60)}
+</style>
+</helmet>
+
+<div style="width:100%;min-height:100vh;overflow-x:clip;color:oklch(22% 0.02 60);display:flex;flex-direction:column">
+
+<nav style="display:flex;align-items:center;padding:18px 48px">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="width:34px;height:34px;border-radius:50%;background:oklch(68% 0.19 35);border:2.5px solid oklch(22% 0.02 60)"></div>
+    <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;letter-spacing:-0.3px">Bonk Code</span>
+  </div>
+</nav>
+
+<div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;padding:40px 24px 80px">
+
+  <div style="position:absolute;top:14%;left:10%;width:56px;height:56px;border-radius:50%;background:oklch(65% 0.16 250);border:3px solid oklch(22% 0.02 60);animation:floatY 4.5s ease-in-out infinite;--r:-8deg"></div>
+  <div style="position:absolute;bottom:12%;left:14%;width:44px;height:44px;background:oklch(85% 0.15 95);border:3px solid oklch(22% 0.02 60);border-radius:10px;transform:rotate(18deg);animation:floatY2 5.5s ease-in-out infinite"></div>
+  <div style="position:absolute;top:18%;right:12%;width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:34px solid oklch(75% 0.16 145);animation:floatY 6s ease-in-out infinite 0.5s"></div>
+  <div style="position:absolute;bottom:16%;right:9%;width:40px;height:40px;border-radius:50%;background:oklch(68% 0.19 35 / 0.7);border:3px solid oklch(22% 0.02 60);animation:floatY2 5s ease-in-out infinite 0.3s"></div>
+
+  <form id="loginForm" style="position:relative;width:100%;max-width:400px;background:oklch(99% 0.008 80);border:2.5px solid oklch(22% 0.02 60);border-radius:22px;padding:44px 36px;box-shadow:6px 6px 0 oklch(22% 0.02 60)">
+    <h1 style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px;margin:0 0 8px;letter-spacing:-0.5px;text-align:center">Welcome Back</h1>
+    <p style="font-size:15px;color:oklch(38% 0.02 60);text-align:center;margin:0 0 30px">Log in to keep building your games.</p>
+
+    <label style="display:block;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;margin-bottom:8px">Username</label>
+    <input id="username" class="bonk-input" type="text" placeholder="Enter your username" style="margin-bottom:20px">
+
+    <label style="display:block;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;margin-bottom:8px">Password</label>
+    <input id="password" class="bonk-input" type="password" placeholder="Enter your password" style="margin-bottom:12px">
+
+    <div id="loginError" style="display:none;color:oklch(55% 0.17 15);font-size:14px;font-weight:600;margin:0 0 18px;text-align:center">The username/password is incorrect</div>
+
+    <div style="text-align:right;margin-bottom:26px">
+      <a href="#" style="font-size:13px;font-weight:500">Forgot password?</a>
+    </div>
+
+    <button type="submit" style="width:100%;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;background:oklch(68% 0.19 35);color:white;padding:15px;border-radius:999px;border:2.5px solid oklch(22% 0.02 60);box-shadow:5px 5px 0 oklch(22% 0.02 60);cursor:pointer">Log In</button>
+
+    <p style="text-align:center;font-size:14px;color:oklch(38% 0.02 60);margin:22px 0 0">New to Bonk Code? <a href="#" style="font-weight:600">Get Started</a></p>
+  </form>
+
+</div>
+</div>
+
+<script>
+  const loginForm = document.getElementById('loginForm');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const loginError = document.getElementById('loginError');
+
+  const resetError = () => {
+    loginError.style.display = 'none';
+    usernameInput.style.borderColor = 'oklch(22% 0.02 60)';
+    passwordInput.style.borderColor = 'oklch(22% 0.02 60)';
+  };
+
+  usernameInput.addEventListener('input', resetError);
+  passwordInput.addEventListener('input', resetError);
+
+  loginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (username === 'actionacademy' && password === '2026demo') {
+      window.location.href = 'https://app.bonkcode.com';
+      return;
+    }
+
+    loginError.style.display = 'block';
+    usernameInput.style.borderColor = 'oklch(55% 0.17 15)';
+    passwordInput.style.borderColor = 'oklch(55% 0.17 15)';
+  });
+</script>
+</x-dc>
+</body>
+</html>
