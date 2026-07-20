@@ -18,6 +18,13 @@
   .bonk-input{width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;font-size:16px;padding:14px 16px;border-radius:14px;border:2.5px solid oklch(22% 0.02 60);background:oklch(99% 0.008 80);outline:none}
   .bonk-input:focus{box-shadow:3px 3px 0 oklch(22% 0.02 60)}
   .bonk-input::placeholder{color:oklch(60% 0.02 60)}
+  .bonk-button{width:100%;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;background:oklch(68% 0.19 35);color:white;padding:15px;border-radius:999px;border:2.5px solid oklch(22% 0.02 60);box-shadow:5px 5px 0 oklch(22% 0.02 60);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease}
+  .bonk-button:hover{opacity:0.95}
+  .bonk-button:active,.bonk-button.is-pressed{transform:translate(3px,3px);box-shadow:2px 2px 0 oklch(22% 0.02 60)}
+  .bonk-button.is-loading{cursor:wait;opacity:0.9}
+  .bonk-button:disabled{cursor:wait}
+  .bonk-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,0.6);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </helmet>
 
@@ -53,7 +60,7 @@
       <a href="#" style="font-size:13px;font-weight:500">Forgot password?</a>
     </div>
 
-    <button type="submit" style="width:100%;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;background:oklch(68% 0.19 35);color:white;padding:15px;border-radius:999px;border:2.5px solid oklch(22% 0.02 60);box-shadow:5px 5px 0 oklch(22% 0.02 60);cursor:pointer">Log In</button>
+    <button id="loginButton" class="bonk-button" type="submit"><span id="loginButtonText">Log In</span><span id="loginSpinner" class="bonk-spinner" style="display:none"></span></button>
 
     <p style="text-align:center;font-size:14px;color:oklch(38% 0.02 60);margin:22px 0 0">New to Bonk Code? <a href="#" style="font-weight:600">Get Started</a></p>
   </form>
@@ -66,6 +73,9 @@
   const usernameInput = document.getElementById('username');
   const passwordInput = document.getElementById('password');
   const loginError = document.getElementById('loginError');
+  const loginButton = document.getElementById('loginButton');
+  const loginButtonText = document.getElementById('loginButtonText');
+  const loginSpinner = document.getElementById('loginSpinner');
 
   const resetError = () => {
     loginError.style.display = 'none';
@@ -73,23 +83,45 @@
     passwordInput.style.borderColor = 'oklch(22% 0.02 60)';
   };
 
+  const setLoadingState = (isLoading) => {
+    loginButton.disabled = isLoading;
+    loginButton.classList.toggle('is-loading', isLoading);
+    loginButtonText.textContent = isLoading ? 'Logging in...' : 'Log In';
+    loginSpinner.style.display = isLoading ? 'inline-block' : 'none';
+  };
+
+  loginButton.addEventListener('pointerdown', () => {
+    loginButton.classList.add('is-pressed');
+  });
+
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach((eventName) => {
+    loginButton.addEventListener(eventName, () => {
+      loginButton.classList.remove('is-pressed');
+    });
+  });
+
   usernameInput.addEventListener('input', resetError);
   passwordInput.addEventListener('input', resetError);
 
   loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
+    resetError();
+    setLoadingState(true);
 
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
+    window.setTimeout(() => {
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
 
-    if (username === 'actonacademy' && password === '2026demo') {
-      window.location.href = 'https://app.bonkcode.com';
-      return;
-    }
+      if (username === 'actonacademy' && password === '2026demo') {
+        window.location.href = 'https://app.bonkcode.com';
+        return;
+      }
 
-    loginError.style.display = 'block';
-    usernameInput.style.borderColor = 'oklch(55% 0.17 15)';
-    passwordInput.style.borderColor = 'oklch(55% 0.17 15)';
+      loginError.style.display = 'block';
+      usernameInput.style.borderColor = 'oklch(55% 0.17 15)';
+      passwordInput.style.borderColor = 'oklch(55% 0.17 15)';
+      setLoadingState(false);
+    }, 600);
   });
 </script>
 </x-dc>
